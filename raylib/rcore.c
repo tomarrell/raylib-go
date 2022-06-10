@@ -4267,7 +4267,7 @@ static bool InitGraphicsDevice(int width, int height)
     TRACELOG(LOG_TRACE, "DISPLAY: EGL matching configs available: %d", matchingNumConfigs);
 
     // find the EGL config that matches the previously setup GBM format
-    int found = 0;
+    /* int found = 0;
     for (EGLint i = 0; i < matchingNumConfigs; ++i)
     {
         EGLint id = 0;
@@ -4292,7 +4292,13 @@ static bool InitGraphicsDevice(int width, int height)
     {
         TRACELOG(LOG_WARNING, "DISPLAY: Failed to find a suitable EGL config");
         return false;
-    }
+    }*/
+
+    // The Solo reports a GBM format which Raylib doesn't know. However, we know
+    // that config 0 works, so use that.
+    CORE.Window.config = configs[0];
+    RL_FREE(configs);
+
 #else
     // Get an appropriate EGL framebuffer configuration
     eglChooseConfig(CORE.Window.device, framebufferAttribs, &CORE.Window.config, 1, &numConfigs);
